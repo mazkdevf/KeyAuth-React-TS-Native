@@ -1,4 +1,4 @@
-# This is broken don't use!
+# This is not broken it is simply not compilted :)
 
 ## KeyAuth TypeScript React Native Example Coming future.
 
