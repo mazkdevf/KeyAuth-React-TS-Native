@@ -1,10 +1,19 @@
-import { useRef, useState } from 'react';
-import { Animated, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { Animated, Pressable, StyleSheet, Text, TextInput, View, ViewStyle } from 'react-native';
 import EyeOpen from '../icons/EyeOpen';
 import EyeClose from '../icons/EyeClose';
 import CustomText from './CustomText';
 
-export default CustomInput = ({ containerStyle, placeholder, onChangeText, error, ...props }) => {
+import { TextInputProps } from 'react-native';
+
+interface CustomInputProps extends TextInputProps {
+  containerStyle?: ViewStyle;
+  placeholder: string;
+  onChangeText?: (text: string) => void;
+  error?: string;
+}
+
+const CustomInput: React.FC<CustomInputProps> = ({ containerStyle, placeholder, onChangeText, error, ...props }) => {
   const [isFocused, setIsFocused] = useState(false);
   const [text, setText] = useState('');
   const [showPassword, setShowPassword] = useState(props.secureTextEntry);
@@ -22,7 +31,7 @@ export default CustomInput = ({ containerStyle, placeholder, onChangeText, error
     }
   };
 
-  const handleTextChange = (text) => {
+  const handleTextChange = (text: string) => {
     setText(text);
     if (onChangeText) {
       onChangeText(text);
@@ -34,7 +43,7 @@ export default CustomInput = ({ containerStyle, placeholder, onChangeText, error
     }
   };
 
-  const animatedLabel = (toValue) => {
+  const animatedLabel = (toValue: number) => {
     Animated.timing(labelPosition, {
       toValue: toValue,
       duration: 200,
@@ -60,36 +69,30 @@ export default CustomInput = ({ containerStyle, placeholder, onChangeText, error
 
   return (
     <View style={containerStyle}>
-        <View style={[styles.innerContainer, error && { borderColor: 'red' }]}>
-            <Animated.Text style={[styles.label, labelStyle]}>{placeholder}</Animated.Text>
-            <View style={styles.inputContainer}>
-                <TextInput
-                    {...props}
-                    style={styles.input}
-                    onFocus={handleFocus}
-                    onBlur={handleBlur}
-                    onChangeText={handleTextChange}
-                    value={text}
-                    textAlignVertical="center"
-                    textContentType={props.secureTextEntry ? 'newPassword' : props.secureTextEntry}
-                    secureTextEntry={showPassword}
-                />
-                {props.secureTextEntry && !!text && (
-                <View>
-                    <Pressable
-                      onPress={() => setShowPassword(!showPassword)}
-                    >
-                    {!showPassword ? (
-                      <EyeOpen/>
-                    ) : (
-                      <EyeClose/>
-                    )}
-                    </Pressable>
-                </View>
-                )}
+      <View style={[styles.innerContainer]}>
+        <Animated.Text style={[styles.label, labelStyle]}>{placeholder}</Animated.Text>
+        <View style={styles.inputContainer}>
+          <TextInput
+            {...props}
+            style={styles.input}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            onChangeText={handleTextChange}
+            value={text}
+            textAlignVertical="center"
+            textContentType={props.secureTextEntry ? 'newPassword' : 'none'}
+            secureTextEntry={showPassword}
+          />
+          {props.secureTextEntry && !!text && (
+            <View>
+              <Pressable onPress={() => setShowPassword(!showPassword)}>
+                {!showPassword ? <EyeOpen /> : <EyeClose />}
+              </Pressable>
             </View>
+          )}
         </View>
-        {error && <CustomText title={error} style={styles.errorText}/>}
+      </View>
+      {error && <CustomText title={error} style={styles.errorText} />}
     </View>
   );
 };
@@ -126,3 +129,5 @@ const styles = StyleSheet.create({
     color: 'red',
   },
 });
+
+export default CustomInput;

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "KeyAuthReactNativeExample",
-    "slug": "KeyAuthReactNativeExample",
+    "name": "KeyAuthApp",
+    "slug": "KeyAuthApp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -24,10 +24,7 @@
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png",
-      "bundler": "metro"
-    },
-    "sdkVersion": "50.0.0"
-  },
-  "name": "keyauthreactnativeexample"
+      "favicon": "./assets/favicon.png"
+    }
+  }
 }
